@@ -1,30 +1,29 @@
 package com.example.conor.sunshine;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.Arrays;
-import java.util.List;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new ForecastListFragment())
                     .commit();
         }
+
     }
 
     @Override
@@ -43,40 +42,27 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_view_location) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+            Uri geoUri = Uri.parse("geo:0,0").buildUpon().appendQueryParameter("q", location).build();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(geoUri);
+            if (intent.resolveActivity(getPackageManager()) == null) {
+                Log.w(LOG_TAG, "No intent handler for uri: " + geoUri);
+                Toast.makeText(this, "You don't have an app installed that can view this location", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        private static final List<String> FORECASTS = Arrays.asList(
-                "Today: Sunny",
-                "Tomorrow: Sunnier",
-                "Later: Sunniest"
-        );
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    getActivity(),
-                    R.layout.list_item_forecast,
-                    R.id.list_item_forecast_textview,
-                    FORECASTS
-            );
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-            listView.setAdapter(adapter);
-            return rootView;
-        }
     }
 
 }
