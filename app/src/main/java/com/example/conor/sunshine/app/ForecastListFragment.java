@@ -1,4 +1,4 @@
-package com.example.conor.sunshine;
+package com.example.conor.sunshine.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.example.conor.sunshine.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;

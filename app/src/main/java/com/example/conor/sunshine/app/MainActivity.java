@@ -1,4 +1,4 @@
-package com.example.conor.sunshine;
+package com.example.conor.sunshine.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.conor.sunshine.R;
 
 public class MainActivity extends ActionBarActivity {
 
