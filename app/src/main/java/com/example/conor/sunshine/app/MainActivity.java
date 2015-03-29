@@ -3,7 +3,6 @@ package com.example.conor.sunshine.app;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,8 +24,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         location = Utility.getPreferredLocation(this);
-
-        MediaStore.Audio.Media.INTERNAL_CONTENT_URI
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
