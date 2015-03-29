@@ -19,4 +19,5 @@
   <string name="pref_units_label_imperial">Imperial</string>
   <string name="menu_view_location">View Location</string>
   <string name="menu_share">Share</string>
+  <string name="loading">Loading...</string>
 </resources>

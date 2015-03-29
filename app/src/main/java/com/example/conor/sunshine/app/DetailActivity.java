@@ -1,6 +1,6 @@
 package com.example.conor.sunshine.app;
 
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
@@ -14,10 +14,11 @@ public class DetailActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_detail);
 
-        String forecastString = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        String forecastString = getIntent().getDataString();
 
         if (savedInstanceState == null) {
-            ForecastDetailFragment forecastDetailFragment = new ForecastDetailFragment(forecastString);
+            Uri itemUri = Uri.parse(forecastString);
+            ForecastDetailFragment forecastDetailFragment = ForecastDetailFragment.create(itemUri);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, forecastDetailFragment)
                     .commit();

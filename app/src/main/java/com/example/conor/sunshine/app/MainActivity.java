@@ -1,10 +1,9 @@
 package com.example.conor.sunshine.app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,16 +15,39 @@ import com.example.conor.sunshine.R;
 public class MainActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String FORECAST_LIST_FRAGMENT_TAG = "ForecastListFragment";
+    private String location;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        location = Utility.getPreferredLocation(this);
+
+        MediaStore.Audio.Media.INTERNAL_CONTENT_URI
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastListFragment())
+                    .add(R.id.container, new ForecastListFragment(), FORECAST_LIST_FRAGMENT_TAG)
                     .commit();
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String latestLocation = Utility.getPreferredLocation(this);
+        // update the location in our second pane using the fragment manager
+        if (latestLocation != null && !latestLocation.equals(location)) {
+            ForecastListFragment fragment = (ForecastListFragment) getSupportFragmentManager().findFragmentByTag(FORECAST_LIST_FRAGMENT_TAG);
+            if (null != fragment) {
+                fragment.onLocationChanged();
+            }
+            location = latestLocation;
+        }
     }
 
     @Override
@@ -50,8 +72,6 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_view_location) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
             Uri geoUri = Uri.parse("geo:0,0").buildUpon().appendQueryParameter("q", location).build();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(geoUri);

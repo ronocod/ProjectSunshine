@@ -3,7 +3,7 @@
   package="com.example.conor.sunshine">
 
   <uses-permission android:name="android.permission.INTERNET" />
-  r
+
   <application
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
@@ -26,8 +26,15 @@
         android:name="android.support.PARENT_ACTIVITY"
         android:value=".app.MainActivity" />
     </activity>
-    <activity android:name=".app.SettingsActivity"
-      android:label="@string/title_activity_settings"/>
+    <activity
+      android:name=".app.SettingsActivity"
+      android:label="@string/title_activity_settings" />
+
+    <provider
+      android:authorities="com.example.conor.sunshine"
+      android:name="com.example.conor.sunshine.app.data.WeatherProvider"
+      android:exported="false"
+      android:enabled="true" />
   </application>
 
 </manifest>
