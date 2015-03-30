@@ -83,7 +83,7 @@ public class ForecastListFragment extends Fragment implements LoaderManager.Load
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                    @Override
+            @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long l) {
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
@@ -126,7 +126,7 @@ public class ForecastListFragment extends Fragment implements LoaderManager.Load
         super.onActivityCreated(savedInstanceState);
     }
 
-    void onLocationChanged(){
+    void onLocationChanged() {
         updateWeatherData();
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
