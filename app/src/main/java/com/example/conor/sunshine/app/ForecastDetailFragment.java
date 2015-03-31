@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.conor.sunshine.R;
@@ -65,6 +66,7 @@ public class ForecastDetailFragment extends Fragment implements LoaderManager.Lo
     private TextView windText;
     private TextView pressureText;
     private TextView descriptionText;
+    private ImageView iconView;
 
     public static ForecastDetailFragment create(Uri itemUri) {
         ForecastDetailFragment fragment = new ForecastDetailFragment();
@@ -101,6 +103,7 @@ public class ForecastDetailFragment extends Fragment implements LoaderManager.Lo
         pressureText = (TextView) rootView.findViewById(R.id.detail_pressure_text);
         pressureText = (TextView) rootView.findViewById(R.id.detail_pressure_text);
         descriptionText = (TextView) rootView.findViewById(R.id.detail_description_text);
+        iconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         return rootView;
     }
 
@@ -175,6 +178,9 @@ public class ForecastDetailFragment extends Fragment implements LoaderManager.Lo
 
         String forecastString = data.getString(data.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESC));
         descriptionText.setText(forecastString);
+
+        int weatherId = data.getInt(data.getColumnIndex(WeatherEntry.COLUMN_WEATHER_ID));
+        iconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
         // Attach an intent to this ShareActionProvider.  You can update this at any time,
         // like when the user selects a new piece of data they might like to share.

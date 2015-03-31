@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.conor.sunshine.R;
+import com.example.conor.sunshine.app.data.WeatherContract;
 
 /**
  * {@link ForecastAdapter} exposes a list of weather forecasts
@@ -63,7 +64,6 @@ public class ForecastAdapter extends CursorAdapter {
         // Choose the layout type
         int viewType = getItemViewType(cursor.getPosition());
         int layoutId = R.layout.list_item_forecast;
-        // TODO: Determine layoutId from viewType
         if (viewType == VIEW_TYPE_TODAY) {
             layoutId = R.layout.list_item_forecast_today;
         }
@@ -82,10 +82,16 @@ public class ForecastAdapter extends CursorAdapter {
 
         ViewHolder holder = (ViewHolder) view.getTag();
 
+
         // Read weather icon ID from cursor
-        int weatherId = cursor.getInt(ForecastListFragment.COL_WEATHER_ID);
+        int weatherId = cursor.getInt(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID));
+        int viewType = getItemViewType(cursor.getPosition());
+        int resource = Utility.getIconResourceForWeatherCondition(weatherId);
+        if (viewType == VIEW_TYPE_TODAY) {
+            resource = Utility.getArtResourceForWeatherCondition(weatherId);
+        }
         // Use placeholder image for now
-        holder.iconView.setImageResource(R.mipmap.ic_launcher);
+        holder.iconView.setImageResource(resource);
 
         // TODO Read date from cursor
         long date = cursor.getLong(ForecastListFragment.COL_WEATHER_DATE);
