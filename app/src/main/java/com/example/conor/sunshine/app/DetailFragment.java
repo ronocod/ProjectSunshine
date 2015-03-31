@@ -178,9 +178,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         boolean isMetric = Utility.isMetric(getActivity());
         long high = data.getLong(data.getColumnIndex(WeatherEntry.COLUMN_MAX_TEMP));
-        highText.setText(Utility.formatTemperature(getActivity(), high, isMetric));
+        highText.setText(Utility.formatTemperature(getActivity(), high));
         long low = data.getLong(data.getColumnIndex(WeatherEntry.COLUMN_MIN_TEMP));
-        lowText.setText(Utility.formatTemperature(getActivity(), low, isMetric));
+        lowText.setText(Utility.formatTemperature(getActivity(), low));
 
         float humidity = data.getFloat(data.getColumnIndex(WeatherEntry.COLUMN_HUMIDITY));
         humidityText.setText(getActivity().getString(R.string.format_humidity, humidity));

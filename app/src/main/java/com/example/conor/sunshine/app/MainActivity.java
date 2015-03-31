@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.example.conor.sunshine.R;
 import com.example.conor.sunshine.app.sync.SunshineSyncAdapter;
-import com.example.conor.sunshine.app.sync.SunshineSyncService;
 
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
@@ -92,24 +91,6 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_view_location) {
-            Uri geoUri = Uri.parse("geo:0,0")
-                    .buildUpon()
-                    .appendQueryParameter("q", location)
-                    .build();
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(geoUri);
-            if (intent.resolveActivity(getPackageManager()) == null) {
-                Log.w(LOG_TAG, "No intent handler for uri: " + geoUri);
-                Toast.makeText(this, "You don't have an app installed that can view this location", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            startActivity(intent);
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
