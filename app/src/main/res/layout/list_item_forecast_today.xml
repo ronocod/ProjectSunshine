@@ -3,6 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_height="wrap_content"
   android:minHeight="96dp"
+  android:background="@drawable/touch_selector"
   android:layout_width="match_parent"
   android:baselineAligned="false">
 

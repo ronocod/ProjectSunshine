@@ -94,7 +94,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_forecast_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         dayText = (TextView) rootView.findViewById(R.id.detail_day_text);
         dateText = (TextView) rootView.findViewById(R.id.detail_date_text);
         highText = (TextView) rootView.findViewById(R.id.detail_high_text);
@@ -192,6 +192,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         String forecastString = data.getString(data.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESC));
         descriptionText.setText(forecastString);
+        // For accessibility, add a content description to the icon field
+        iconView.setContentDescription(forecastString);
 
         int weatherId = data.getInt(data.getColumnIndex(WeatherEntry.COLUMN_WEATHER_ID));
         iconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));

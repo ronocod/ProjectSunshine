@@ -1,10 +1,8 @@
 package com.example.conor.sunshine.app;
 
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -21,6 +19,7 @@ import android.widget.ListView;
 
 import com.example.conor.sunshine.R;
 import com.example.conor.sunshine.app.data.WeatherContract;
+import com.example.conor.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -61,6 +60,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_LATITUDE = 7;
     static final int COL_LONGITUDE = 8;
 
+    private boolean useTodayLayout;
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        this.useTodayLayout = useTodayLayout;
+        if (adapter != null) {
+            adapter.setUseTodayLayout(useTodayLayout);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +88,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         adapter = new ForecastAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        adapter.setUseTodayLayout(useTodayLayout);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,10 +119,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateWeatherData() {
-        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(getActivity());
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String code = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
-        fetchWeatherTask.execute(code);
+        SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
