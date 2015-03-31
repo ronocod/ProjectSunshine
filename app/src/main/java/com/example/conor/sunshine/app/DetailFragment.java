@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.conor.sunshine.R;
+import com.example.conor.sunshine.app.data.WeatherContract;
 
 import static com.example.conor.sunshine.app.data.WeatherContract.LocationEntry;
 import static com.example.conor.sunshine.app.data.WeatherContract.WeatherEntry;
@@ -29,8 +30,8 @@ import static com.example.conor.sunshine.app.data.WeatherContract.WeatherEntry;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ForecastDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String LOG_TAG = ForecastDetailFragment.class.getSimpleName();
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
     private static final String[] COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
@@ -56,7 +57,6 @@ public class ForecastDetailFragment extends Fragment implements LoaderManager.Lo
     private static final String KEY_URI = "KEY_URI";
     private static final int LOADER_ID = 1;
 
-    private Uri forecastUri;
     private ShareActionProvider shareActionProvider;
     private TextView dayText;
     private TextView dateText;
@@ -67,9 +67,10 @@ public class ForecastDetailFragment extends Fragment implements LoaderManager.Lo
     private TextView pressureText;
     private TextView descriptionText;
     private ImageView iconView;
+    private Uri forecastUri;
 
-    public static ForecastDetailFragment create(Uri itemUri) {
-        ForecastDetailFragment fragment = new ForecastDetailFragment();
+    public static DetailFragment create(Uri itemUri) {
+        DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(KEY_URI, itemUri);
         fragment.setArguments(args);
@@ -144,8 +145,21 @@ public class ForecastDetailFragment extends Fragment implements LoaderManager.Lo
 
     }
 
+    void onLocationChanged(String newLocation) {
+        // replace the uri, since the location has changed
+        Uri uri = forecastUri;
+        if (null != uri) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+            forecastUri = WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            getLoaderManager().restartLoader(LOADER_ID, null, this);
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (null == forecastUri) {
+            return null;
+        }
         // Sort order:  Ascending, by date.
         return new CursorLoader(getActivity(),
                 forecastUri,
