@@ -42,7 +42,7 @@
 
 
     <provider
-      android:authorities="com.example.conor.sunshine"
+      android:authorities="@string/content_authority"
       android:name="com.example.conor.sunshine.app.data.WeatherProvider"
       android:exported="false"
       android:enabled="true" />

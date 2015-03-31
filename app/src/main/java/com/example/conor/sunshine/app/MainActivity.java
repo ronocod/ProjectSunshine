@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.conor.sunshine.R;
+import com.example.conor.sunshine.app.sync.SunshineSyncAdapter;
+import com.example.conor.sunshine.app.sync.SunshineSyncService;
 
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
@@ -48,6 +50,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         forecastFragment.setUseTodayLayout(!inTwoPaneMode);
 
         getSupportActionBar().setElevation(0f);
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
